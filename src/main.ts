@@ -1,16 +1,24 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import * as process from 'process'
+import {slugify} from 'transliteration'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    if (process.env.GITHUB_REF == null) {
+      core.setFailed('No GITHUB_REF env variable found')
+      return
+    }
+    const ref = process.env.GITHUB_REF
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const branchName = ref.split('/').slice(2).join('/')
 
-    core.setOutput('time', new Date().toTimeString())
+    const branchNameSlug = slugify(branchName)
+
+    core.debug(`Sanitized branch name is ${branchNameSlug}`)
+
+    core.setOutput('branch_name', branchNameSlug)
+
+    core.exportVariable('BRANCH_NAME', branchNameSlug)
   } catch (error) {
     core.setFailed(error.message)
   }
