@@ -38,7 +38,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(186));
 const process = __importStar(__webpack_require__(765));
-const transliteration_1 = __webpack_require__(636);
+const sanitize_1 = __webpack_require__(930);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -47,8 +47,7 @@ function run() {
                 core.setFailed('No GITHUB_REF env variable found');
                 return;
             }
-            const branchName = ref.split('/').slice(2).join('/');
-            const branchNameSlug = transliteration_1.slugify(branchName);
+            const branchNameSlug = sanitize_1.sanitize(ref);
             core.info(`Sanitized branch name is ${branchNameSlug}`);
             core.setOutput('branch_name', branchNameSlug);
             core.exportVariable('BRANCH_NAME', branchNameSlug);
@@ -59,6 +58,22 @@ function run() {
     });
 }
 run();
+
+
+/***/ }),
+
+/***/ 930:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.sanitize = void 0;
+const transliteration_1 = __webpack_require__(636);
+function sanitize(ref) {
+    const branchName = ref.split('/').slice(2).join('/');
+    return transliteration_1.slugify(branchName);
+}
+exports.sanitize = sanitize;
 
 
 /***/ }),

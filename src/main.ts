@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as process from 'process'
-import {slugify} from 'transliteration'
+import {sanitize} from './sanitize'
 
 async function run(): Promise<void> {
   try {
@@ -11,9 +11,7 @@ async function run(): Promise<void> {
       return
     }
 
-    const branchName = ref.split('/').slice(2).join('/')
-
-    const branchNameSlug = slugify(branchName)
+    const branchNameSlug = sanitize(ref)
 
     core.info(`Sanitized branch name is ${branchNameSlug}`)
 
