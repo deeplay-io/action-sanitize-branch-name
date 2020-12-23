@@ -42,14 +42,14 @@ const transliteration_1 = __webpack_require__(636);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (process.env.GITHUB_REF == null) {
+            const ref = process.env.GITHUB_REF;
+            if (ref == null) {
                 core.setFailed('No GITHUB_REF env variable found');
                 return;
             }
-            const ref = process.env.GITHUB_REF;
             const branchName = ref.split('/').slice(2).join('/');
             const branchNameSlug = transliteration_1.slugify(branchName);
-            core.debug(`Sanitized branch name is ${branchNameSlug}`);
+            core.info(`Sanitized branch name is ${branchNameSlug}`);
             core.setOutput('branch_name', branchNameSlug);
             core.exportVariable('BRANCH_NAME', branchNameSlug);
         }
