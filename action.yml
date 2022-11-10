@@ -2,5 +2,5 @@ name: 'Get sanitized branch name'
 description: 'Export sanitized branch name as environment variable'
 author: 'deeplay'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
