@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import * as process from 'process'
 import {sanitize} from './sanitize'
 
 async function run(): Promise<void> {
@@ -18,8 +17,12 @@ async function run(): Promise<void> {
     core.setOutput('branch_name', branchNameSlug)
 
     core.exportVariable('BRANCH_NAME', branchNameSlug)
-  } catch (error) {
-    core.setFailed(error.message)
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      core.setFailed(error)
+      return
+    }
+    core.setFailed(String(error))
   }
 }
 
