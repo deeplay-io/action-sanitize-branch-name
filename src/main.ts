@@ -12,14 +12,12 @@ export function sanitize(ref: string): string {
 
 ;(async (): Promise<void> => {
   try {
-    const ref = core.getInput('ref', {required: true})
+    const ref = process.env.GITHUB_REF
 
-    if (ref == null || ref === '') {
-      core.setFailed('No ref input found')
-
+    if (ref == null) {
+      core.setFailed('No GITHUB_REF env variable found')
       return
     }
-
     const branchNameSlug = sanitize(ref)
 
     core.info(`Got ref: ${ref}`)
