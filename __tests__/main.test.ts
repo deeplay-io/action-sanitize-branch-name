@@ -2,7 +2,7 @@ import * as process from 'process'
 import * as cp from 'child_process'
 import * as path from 'path'
 
-import {sanitize} from '../src/sanitize'
+import {sanitize} from '../src/main'
 
 test('its supports cyrrilic', () => {
   expect(sanitize('ref/branch/русский-бранч')).toEqual('russkiy-branch')
